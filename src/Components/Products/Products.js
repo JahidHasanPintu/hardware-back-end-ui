@@ -1,6 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import useProducts from '../../hooks/useProducts';
+
+
 
 const Products = () => {
+
+    const [products,setProducts] = useState([]);
+    const [search,setSearch] = useState("");
+    const [brand,setBrand] = useState("");
+    const [category,setCategory] = useState("");
+    const [subCategory,setSubCategory] = useState("");
+
+    const getProducts = () => {
+        fetch(`http://localhost:5000/api/v1/products?page=1&limit=20&search=${search}&brand_id=${brand}&cat_id=${category}&subcat_id=${subCategory}`)
+        .then(res=>res.json())
+        .then(data => setProducts(data.data));
+    
+       
+    };
+    const handleSearch = (e) =>{
+        const searchText = e.target.value;
+        if(!searchText){
+            setSearch("");
+        }
+        setSearch(searchText);
+        getProducts();
+        // console.log(searchText);
+    }
+
+    useEffect(()=>{
+        getProducts();
+    },[])
+    console.log(products);
     return (
         <div className='text-start '>
             <div class="card">
@@ -11,8 +42,12 @@ const Products = () => {
                         <div class="row">
                             <div class="col-sm-3">
                                 <div class="mb-3">
-                                    <label class="form-label">Name</label>
-                                    <input type="text" class="form-control" placeholder="Product name" />
+                                    <label class="form-label">Product Name</label>
+                                    <input 
+                                    type="text" 
+                                    onChange={handleSearch}
+                                    class="form-control" 
+                                    placeholder="Product name" />
                                 </div>
                             </div>
                             <div class="col-sm-3">
@@ -46,7 +81,7 @@ const Products = () => {
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        {/* <div class="row">
                             <div class="col-sm-3">
                                 <div class="mb-3">
                                     <label for="statusSelection" class="form-label">Status</label>
@@ -57,7 +92,7 @@ const Products = () => {
                                     </select>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                     </form>
                     <button type="button" class="btn btn-primary submit">Apply Filter</button>
@@ -73,42 +108,27 @@ const Products = () => {
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>First Name</th>
-                                        <th>LAST NAME</th>
-                                        <th>USERNAME</th>
+                                        <th>Product Name</th>
+                                        <th>Brand</th>
+                                        <th>Category</th>
+                                        <th>Sub Category</th>
+                                        <th>Price</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th>1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>@mdo</td>
-                                    </tr>
-                                    <tr>
-                                        <th>2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>@fat</td>
-                                    </tr>
-                                    <tr>
-                                        <th>3</th>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>@twitter</td>
-                                    </tr>
-                                    <tr>
-                                        <th>4</th>
-                                        <td>Larry</td>
-                                        <td>Jellybean</td>
-                                        <td>@lajelly</td>
-                                    </tr>
-                                    <tr>
-                                        <th>5</th>
-                                        <td>Larry</td>
-                                        <td>Kikat</td>
-                                        <td>@lakitkat</td>
-                                    </tr>
+                                {
+                                    products?.map((product, index) =>
+                                        <tr key={product.id}>
+                                            <th>{index + 1}</th>
+                                            <td>{product.name}</td>
+                                            <td>{product.brand_name}</td>
+                                            <td>{product.cat_name}</td>
+                                            <td>{product.subcat_name}</td>
+                                            <td>{product.price}</td>
+                                        </tr>
+                                    )
+                                }
+                                    
                                 </tbody>
                             </table>
                         </div>

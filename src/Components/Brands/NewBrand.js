@@ -3,64 +3,51 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const NewBrand = () => {
+  const [brandName, setBrandName] = useState('');
+  const [brandImage, setBrandImage] = useState(null);
+  const [status, setStatus] = useState('active');
 
-  const [formValue, setFormValue] = useState({});
-  const InputValue = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    const data = { ...formValue, [name]: value };
-    setFormValue(data);
-  };
+  const handleInputChange = (event) => {
+    const { name, value, files } = event.target;
 
-  const createData = (e) => {
-    e.preventDefault();
-    insertData();
-  };
-
-  const insertData = async () => {
-    const fd = new FormData(document.getElementById("from_input"));
-    const response = await postApi(fd);
-    if (response) {
-      if (response.code === 200) {
-        toast.success(response.message[0], {
-          position: "top-right",
-        });
-        document.getElementById("from_input").reset()
-      } else {
-        toast.error(response.message[0], {
-          position: "top-right",
-        });
-      }
+    if (name === 'brand_name') {
+      setBrandName(value);
+    } else if (name === 'brand_image') {
+      setBrandImage(files[0]);
+    } else if (name === 'status') {
+      setStatus(value);
     }
   };
-  const postApi = async (data) => {
-    const api_url = `http://localhost:5000/api/v1/brands/create`;
-    
-    
-    let conf = {};
-    // if (!config) {
-      conf = {
-        headers: {
-          // authorization: `Bearer ${token}`,
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      };
-    // } else {
-    //   conf = config;
-    // }
-    return await axios
-      .post(api_url, data, conf)
-      .then(async (response) => {
-        return response.data;
-      })
-      .catch((error) => {
-        console.log("Error:", "Network connection failed!", "error");
-      });
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append('brand_name', brandName);
+    formData.append('brand_image', brandImage);
+    formData.append('status', status);
+
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/v1/brands/create',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      console.log(response.data);
+
+      toast.success('Brand created successfully.');
+    } catch (error) {
+      console.error(error);
+
+      toast.error('Failed to create brand.');
+    }
   };
 
-  useEffect(() => {
-  }, []);
   return (
     <div className='text-start'>
       <div className="row">
@@ -72,49 +59,50 @@ const NewBrand = () => {
               <form
                 className="forms-sample row"
                 id="from_input"
-                onChange={InputValue}
-                onSubmit={createData}
+                encType="multipart/form-data"
+                onSubmit={handleSubmit}
               >
                 <div className="col-md-4">
-                  <label for="name" className="form-label">
+                  <label htmlFor="name" className="form-label">
                     Brand Name
                   </label>
                   <input
                     type="text"
                     className="form-control"
                     id="name"
-                    autocomplete="off"
+                    autoComplete="off"
                     name="brand_name"
-                    value={formValue.brand_name}
                     placeholder="Brand Name"
+                    value={brandName}
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="col-md-4">
-                  <label for="image" className="form-label">
+                  <label htmlFor="image" className="form-label">
                     Image
                   </label>
                   <input
-                    type="text"
+                    type="file"
                     className="form-control"
                     id="image"
                     name="brand_image"
-                    placeholder="Email"
+                    placeholder="Images"
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="col-md-4">
-                  <label for="status" className="form-label">
+                  <label htmlFor="status" className="form-label">
                     Status
                   </label>
                   <select
                     name="status"
                     id="status"
                     className="form-control"
-                    value={formValue.status}
+                    value={status}
+                    onChange={handleInputChange}
                   >
-                    <option value="active" selected>
-                      Active
-                    </option>
-                    <option value="inactive">In Active</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
                   </select>
                 </div>
 

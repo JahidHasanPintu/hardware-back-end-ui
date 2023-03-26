@@ -17,8 +17,8 @@
 	.st11{fill:#F3A9B8;}
 	.st12{opacity:0.7;fill:#E0EEFB;}
 	.st13{opacity:0.5;fill:#E0EEFB;}
-	.st14{fill:none;stroke:#2E3154;stroke-width:0.5;stroke-miterlimit:10;}
-	.st15{fill:none;stroke:#2E3154;stroke-width:0.5;stroke-miterlimit:10;stroke-dasharray:1.0014,1.0014;}
+	.st14{fill:none;stroke:#2E3154;strokeWidth:0.5;stroke-miterlimit:10;}
+	.st15{fill:none;stroke:#2E3154;strokeWidth:0.5;stroke-miterlimit:10;stroke-dasharray:1.0014,1.0014;}
 	.st16{fill:#2E3154;}
 	.st17{fill:#5A75C2;}
 	.st18{fill:#354B87;}

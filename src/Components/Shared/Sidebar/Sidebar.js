@@ -84,25 +84,7 @@ const Sidebar = () => {
               </ul>
             </div>
           </li>
-          <li className="nav-item">
-            <a className="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false" aria-controls="users">
-              <i className="link-icon" data-feather="mail"></i>
-              <span className="link-title">Users</span>
-              <i className="link-arrow" data-feather="chevron-down"></i>
-            </a>
-            <div className="collapse" id="users">
-              <ul className="nav sub-menu">
-                <li className="nav-item">
-                  
-                  <Link to = "/users"  className="nav-link">All Users</Link>
-                </li>
-                <li className="nav-item">
-                <Link to = "/create-user"  className="nav-link">Add New User</Link>
-                </li>
-                
-              </ul>
-            </div>
-          </li>
+
           <li className="nav-item">
             <a className="nav-link" data-bs-toggle="collapse" href="#subcatgories" role="button" aria-expanded="false" aria-controls="subcatgories">
               <i className="link-icon" data-feather="mail"></i>
@@ -122,6 +104,27 @@ const Sidebar = () => {
               </ul>
             </div>
           </li>
+          
+          <li className="nav-item">
+            <a className="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false" aria-controls="users">
+              <i className="link-icon" data-feather="mail"></i>
+              <span className="link-title">Users</span>
+              <i className="link-arrow" data-feather="chevron-down"></i>
+            </a>
+            <div className="collapse" id="users">
+              <ul className="nav sub-menu">
+                <li className="nav-item">
+                  
+                  <Link to = "/users"  className="nav-link">All Users</Link>
+                </li>
+                <li className="nav-item">
+                <Link to = "/create-user"  className="nav-link">Add New User</Link>
+                </li>
+                
+              </ul>
+            </div>
+          </li>
+          
           
            {/* <li className="nav-item nav-category">Components</li>
           <li className="nav-item">

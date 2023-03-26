@@ -8,6 +8,6 @@
       <use width="100%" height="100%" transform="scale(1 -1)" xlink:href="#a"/>
     </g>
     <use width="100%" height="100%" transform="scale(-1 1)" xlink:href="#b"/>
-    <circle r="34.3" fill="#e5be01" stroke="#00a1de" stroke-width="3.4"/>
+    <circle r="34.3" fill="#e5be01" stroke="#00a1de" strokeWidth="3.4"/>
   </g>
 </svg>

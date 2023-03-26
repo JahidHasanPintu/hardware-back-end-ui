@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" id="flag-icon-css-hm" viewBox="0 0 640 480">
-  <g stroke-width="1pt">
+  <g strokeWidth="1pt">
     <path fill="#006" d="M0 0h640v480H0z"/>
     <path fill="#fff" d="M0 0v30.6l372.6 243h46.9V243L46.9 0H0zm419.5 0v30.6l-372.6 243H0V243L372.6 0h46.9z"/>
     <path fill="#fff" d="M174.8 0v273.6h69.9V0h-70zM0 91.2v91.2h419.5V91.2H0z"/>

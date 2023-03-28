@@ -44,17 +44,7 @@ const Subcategories = () => {
 							</div>
 
 							<div class="col-sm-3">
-								<div class="mb-3">
-									<label for="brandSelection" class="form-label">Brand</label>
-									<select class="form-select" id="brandSelection">
-										<option selected disabled>Select Brand</option>
-										<option>Oppo</option>
-										<option>Redmi</option>
-									</select>
-								</div>
-							</div>
-							<div class="col-sm-3">
-								<div class="mb-3">
+							<div class="mb-3">
 									<label for="statusSelection" class="form-label">Status</label>
 									<select class="form-select" id="statusSelection">
 										<option selected disabled>Select Status</option>
@@ -63,14 +53,13 @@ const Subcategories = () => {
 									</select>
 								</div>
 							</div>
-						</div>
-
-						<div class="row">
-
+							<div class="col-sm-3">
+							<button type="button" class="btn btn-primary submit">Apply Filter</button>
+							</div>
 						</div>
 
 					</form>
-					<button type="button" class="btn btn-primary submit">Apply Filter</button>
+					{/* <button type="button" class="btn btn-primary submit">Apply Filter</button> */}
 				</div>
 			</div>
 			<div class="col-md-12 grid-margin stretch-card mt-3">

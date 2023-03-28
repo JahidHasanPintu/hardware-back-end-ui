@@ -45,7 +45,7 @@ const NewSubcategories = () => {
                                         <option value="inactive">In Active</option>
                                     </select>
                                 </div>
-                                <div className="col-md-3">
+                                {/* <div className="col-md-3">
                                     <label for="image" className="form-label">
                                         Image
                                     </label>
@@ -56,7 +56,8 @@ const NewSubcategories = () => {
                                         name="brand_image"
                                         placeholder="Email"
                                     />
-                                </div>
+                                </div> */}
+                                
                                 <div className="col-md-3">
                                     <label for="status" className="form-label">
                                         Status
@@ -73,6 +74,7 @@ const NewSubcategories = () => {
                                         <option value="inactive">In Active</option>
                                     </select>
                                 </div>
+                                
 
                                 <div className="form-check col-md-4"></div>
                                 <div className="form-check col-md-4"></div>

@@ -3,61 +3,51 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 
 const NewCategory = () => {
-  const [formValue, setFormValue] = useState({});
-  const InputValue = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    const data = { ...formValue, [name]: value };
-    setFormValue(data);
-  };
+  const [categoryName, setCategoryName] = useState('');
+  const [categoryImage, setCategoryImage] = useState(null);
+  const [status, setStatus] = useState('active');
 
-  const createData = (e) => {
-    e.preventDefault();
-    insertData();
-  };
+  const handleInputChange = (event) => {
+    const { name, value, files } = event.target;
 
-  const insertData = async () => {
-    const fd = new FormData(document.getElementById("from_input"));
-    const response = await postApi(fd);
-    if (response) {
-      if (response.code === 200) {
-        toast.success(response.message[0], {
-          position: "top-right",
-        });
-        document.getElementById("from_input").reset()
-      } else {
-        toast.error(response.message[0], {
-          position: "top-right",
-        });
-      }
+    if (name === 'cat_name') {
+      setCategoryName(value);
+    } else if (name === 'cat_image') {
+      setCategoryImage(files[0]);
+    } else if (name === 'status') {
+      setStatus(value);
     }
   };
-  const postApi = async (data) => {
-    const api_url = `http://localhost:5000/api/v1/categories/create`;
-    let conf = {};
-    // if (!config) {
-      conf = {
-        headers: {
-          // authorization: `Bearer ${token}`,
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      };
-    // } else {
-    //   conf = config;
-    // }
-    return await axios
-      .post(api_url, data, conf)
-      .then(async (response) => {
-        return response.data;
-      })
-      .catch((error) => {
-        console.log("Error:", "Network connection failed!", "error");
-      });
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    formData.append('cat_name', categoryName);
+    formData.append('cat_image', categoryImage);
+    formData.append('status', status);
+
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/api/v1/categories/create',
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      console.log(response.data);
+
+      toast.success('category created successfully.');
+    } catch (error) {
+      console.error(error);
+
+      toast.error('Failed to create category.');
+    }
   };
 
-  useEffect(() => {
-  }, []);
   return (
     <div className='text-start'>
       <div className="row">
@@ -69,8 +59,8 @@ const NewCategory = () => {
               <form
                 className="forms-sample row"
                 id="from_input"
-                onChange={InputValue}
-                onSubmit={createData}
+                encType="multipart/form-data"
+                onSubmit={handleSubmit}
               >
                 <div className="col-md-4">
                   <label for="name" className="form-label">
@@ -82,8 +72,9 @@ const NewCategory = () => {
                     id="name"
                     autocomplete="off"
                     name="cat_name"
-                    value={formValue.cat_name}
+                    value={categoryName}
                     placeholder="category name"
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="col-md-4">
@@ -94,8 +85,9 @@ const NewCategory = () => {
                     type="file"
                     className="form-control"
                     id="image"
-                    name="image"
-                    placeholder="Email"
+                    name="cat_image"
+                    placeholder="Category Image"
+                    onChange={handleInputChange}
                   />
                 </div>
                 <div className="col-md-4">
@@ -103,10 +95,11 @@ const NewCategory = () => {
                     Status
                   </label>
                   <select
-                    name="status"
-                    id="status"
-                    className="form-control"
-                    value={formValue.status}
+                   name="status"
+                   id="status"
+                   className="form-control"
+                   value={status}
+                   onChange={handleInputChange}
                   >
                     <option value="active" selected>
                       Active

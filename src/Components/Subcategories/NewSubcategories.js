@@ -1,6 +1,12 @@
+
 import React from 'react';
+import useCategories from '../../hooks/useCategories';
+
 
 const NewSubcategories = () => {
+    const [categories] = useCategories();
+
+	
     return (
         <div className='text-start'>
             <div className="row">
@@ -37,12 +43,17 @@ const NewSubcategories = () => {
                                         name="status"
                                         id="status"
                                         className="form-control"
-                                        value={""}
+                                        
                                     >
-                                        <option value="active" selected>
-                                            Select Parent Category
-                                        </option>
-                                        <option value="inactive">In Active</option>
+                                        <option >Select Parent Category</option>
+                                        {categories?.map((category, key) =>
+                                        <option value={category.cat_id} >
+                                        {category.cat_name}
+                                    </option>
+                                        )}
+
+                                        
+                                        
                                     </select>
                                 </div>
                                 {/* <div className="col-md-3">

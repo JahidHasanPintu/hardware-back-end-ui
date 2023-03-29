@@ -73,7 +73,7 @@ const Subcategories = () => {
 									<tr>
 										<th>#</th>
 										<th>Subcategories</th>
-										<th>Parent ID</th>
+										<th>Parent Category</th>
 										<th>Status</th>
 										<th>Action</th>
 									</tr>
@@ -83,7 +83,7 @@ const Subcategories = () => {
                                 <tr  key={key}>
                                 <th>{++key}</th>
                                 <td>{subcategory.subcat_name}</td>
-                                <td>{subcategory.cat_id}</td>
+                                <td>{subcategory.cat_name}</td>
                                 <td>{subcategory.status}</td>
                                 <td>
                                     

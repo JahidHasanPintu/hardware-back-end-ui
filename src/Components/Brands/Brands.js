@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Pagination from '../Shared/Pagination/Pagination';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const Brands = () => {
     const [brands, setBrands] = useState([]);
@@ -10,6 +11,8 @@ const Brands = () => {
     const [search, setSearch] = useState("");
     const [status, setStatus] = useState("");
     const [limit, setLimit] = useState(20);
+    const [singleBrand, setSingleBrand] = useState({});
+    
 
     // Fetch data from server when component mounts
     useEffect(() => {
@@ -71,15 +74,13 @@ const Brands = () => {
 
             );
     };
-    const [singleBrand, setSingleBrand] = useState({});
 
+    const navigate =useNavigate();
     const handleEdit = (brand) => {
-        setSingleBrand(brand);
-        
-    }
+        // console.log(brandID);
+        navigate(`/edit-brand/${brand.brand_id}`,{state: {brand : brand }});
+      }
     
-
-
     // Updating Brand details 
     const [brandName, setBrandName] = useState('');
     const [brandImage, setBrandImage] = useState(null);
@@ -207,8 +208,8 @@ const Brands = () => {
 
                                                 <button type="button"
                                                     onClick={() => handleEdit(brand)}
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#updateBrandModal"
+                                                    // data-bs-toggle="modal"
+                                                    // data-bs-target="#updateBrandModal"
                                                     class="btn btn-primary btn-icon me-1">
 
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
@@ -260,7 +261,7 @@ const Brands = () => {
                                         name="brand_name"
                                         defaultValue={singleBrand.brand_name}
                                         placeholder="Brand Name"
-                                        value={brandName}
+                                        value={singleBrand.brand_name}
                                         onChange={handleInputChange}
                                     />
                                 </div>

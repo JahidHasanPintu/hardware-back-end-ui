@@ -5,6 +5,7 @@ import Sidebar from './Shared/Sidebar/Sidebar';
 import { Route, Routes } from 'react-router-dom';
 import Categories from './Categories/Categories';
 import NewCategory from './Categories/NewCategory';
+import EditCategories from './Categories/EditCategories';
 import Brands from './Brands/Brands';
 import NewBrand from './Brands/NewBrand';
 import Subcategories from './Subcategories/Subcategories';
@@ -13,6 +14,7 @@ import Products from './Products/Products';
 import NewProducts from './Products/NewProducts';
 import Users from './Users/Users';
 import NewUsers from './Users/NewUsers';
+import EditBrand from './Brands/EditBrand';
 const Layout = () => {
     return (
         <div className='main-wrapper text-left'>
@@ -24,8 +26,12 @@ const Layout = () => {
         
                 {/* <Route path="/" element={<Dashboard/>}></Route> */}
                 <Route path="/categories" element={<Categories/>}></Route>
+                <Route path="/edit-cat" element={<EditCategories />}></Route>
+                <Route path="/edit-cat/:catID" element={<EditCategories />}></Route>
                 <Route path="/create-category" element={<NewCategory/>}></Route>
                 <Route path="/brands" element={<Brands/>}></Route>
+                <Route path="/edit-brand" element={<EditBrand/>}></Route>
+                <Route path="/edit-brand/:BrandID" element={<EditBrand/>}></Route>
                 <Route path="/create-brand" element={<NewBrand/>}></Route>
                 <Route path="/subcategories" element={<Subcategories/>}></Route>
                 <Route path="/create-subcategories" element={<NewSubcategories/>}></Route>

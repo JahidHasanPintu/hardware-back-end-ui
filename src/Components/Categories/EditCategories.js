@@ -10,24 +10,34 @@ const EditCategories = () => {
  
 
 
+    const [brandName, setBrandName] = useState('');
+    const [brandImage, setBrandImage] = useState(null);
+    const [status, setStatus] = useState('active');
 
+    const handleInputChange = (event) => {
+        const { name, value, files } = event.target;
 
-    const [formValue, setFormValue] = useState({});
-    const InputValue = (e) => {
-        const name = e.target.name;
-        const value = e.target.value;
-        const data = { ...formValue, [name]: value };
-        setFormValue(data);
-      };
+        if (name === 'cat_name') {
+            setBrandName(value);
+        } else if (name === 'cat_image') {
+            setBrandImage(files[0]);
+        } else if (name === 'status') {
+            setStatus(value);
+        }
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const formData = new FormData();
+        formData.append('cat_name', brandName);
+        formData.append('cat_image', brandImage);
+        formData.append('status', status);
 
         try {
             const response = await axios.put(
                 `http://localhost:5000/api/v1/categories/${category.cat_id}`,
-                // formData,
-                formValue,
+                formData,
+                // formValue,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -60,7 +70,7 @@ const EditCategories = () => {
                                 id="from_input"
                                 encType="multipart/form-data"
                                 onSubmit={handleSubmit}
-                                onChange={InputValue}
+                                // onChange={InputValue}
                             >
                                 <div className="col-md-4">
                                     <label htmlFor="name" className="form-label">
@@ -74,6 +84,7 @@ const EditCategories = () => {
                                         name="cat_name"
                                         placeholder="Category Name"
                                         defaultValue={category.cat_name}
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="col-md-4">
@@ -86,6 +97,7 @@ const EditCategories = () => {
                                         id="image"
                                         name="cat_image"
                                         placeholder="Images"
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="col-md-4">
@@ -96,6 +108,7 @@ const EditCategories = () => {
                                         name="status"
                                         id="status"
                                         className="form-control"
+                                        onChange={handleInputChange}
                                         // defaultValue={brand.status}
                                     >
                                         <option >Select Status</option>

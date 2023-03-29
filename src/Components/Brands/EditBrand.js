@@ -4,30 +4,40 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const EditBrand = () => {
+    
     const location = useLocation();
     const brand = location.state.brand;
+    const brandID = brand.brand_id;
+
+    const [brandName, setBrandName] = useState('');
+    const [brandImage, setBrandImage] = useState(null);
+    const [status, setStatus] = useState('active');
+
+    const handleInputChange = (event) => {
+        const { name, value, files } = event.target;
+
+        if (name === 'brand_name') {
+            setBrandName(value);
+        } else if (name === 'brand_image') {
+            setBrandImage(files[0]);
+        } else if (name === 'status') {
+            setStatus(value);
+        }
+    };
+    
     const navigate = useNavigate();
- 
-
-
-
-
-    const [formValue, setFormValue] = useState({});
-    const InputValue = (e) => {
-        const name = e.target.name;
-        const value = e.target.value;
-        const data = { ...formValue, [name]: value };
-        setFormValue(data);
-      };
-
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        const formData = new FormData();
+        formData.append('brand_name', brandName);
+        formData.append('brand_image', brandImage);
+        formData.append('status', status);
+
         try {
             const response = await axios.put(
-                `http://localhost:5000/api/v1/brands/${brand.brand_id}`,
-                // formData,
-                formValue,
+                `http://localhost:5000/api/v1/brands/${brandID}`,
+                formData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -39,7 +49,6 @@ const EditBrand = () => {
 
             toast.success('Brand updated successfully.');
             navigate('/brands')
-            
         } catch (error) {
             console.error(error);
 
@@ -60,7 +69,6 @@ const EditBrand = () => {
                                 id="from_input"
                                 encType="multipart/form-data"
                                 onSubmit={handleSubmit}
-                                onChange={InputValue}
                             >
                                 <div className="col-md-4">
                                     <label htmlFor="name" className="form-label">
@@ -74,6 +82,7 @@ const EditBrand = () => {
                                         name="brand_name"
                                         placeholder="Brand Name"
                                         defaultValue={brand.brand_name}
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="col-md-4">
@@ -86,6 +95,7 @@ const EditBrand = () => {
                                         id="image"
                                         name="brand_image"
                                         placeholder="Images"
+                                        onChange={handleInputChange}
                                     />
                                 </div>
                                 <div className="col-md-4">
@@ -96,7 +106,7 @@ const EditBrand = () => {
                                         name="status"
                                         id="status"
                                         className="form-control"
-                                        // defaultValue={brand.status}
+                                        onChange={handleInputChange}
                                     >
                                         <option >Select Status</option>
                                         <option value="active">Active</option>

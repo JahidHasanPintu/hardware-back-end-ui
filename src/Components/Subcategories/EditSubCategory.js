@@ -1,45 +1,49 @@
-
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useCategories from '../../hooks/useCategories';
 
-
-const NewSubcategories = () => {
+const EditSubCategory = () => {
+    const location = useLocation();
+    const subcategory = location.state.subcategory;
+    const navigate = useNavigate();
     const [categories] = useCategories();
 
-    const [subCategoryName, setSubCategoryName] = useState('');
+ 
+
     const [categoryId, setCategoryId] = useState('');
+    const [subCatName, setSubCatName] = useState('');
+    const [subCatImage, setSubCatImage] = useState(null);
     const [status, setStatus] = useState('active');
-    const [subCategoryImage, setSubCategoryImage] = useState(null);
 
     const handleInputChange = (event) => {
         const { name, value, files } = event.target;
 
         if (name === 'subcat_name') {
-            setSubCategoryName(value);
-        } else if (name === 'cat_id') {
-            setCategoryId(value);
+            setSubCatName(value);
+        } else if (name === 'subcat_image') {
+            setSubCatImage(files[0]);
         } else if (name === 'status') {
             setStatus(value);
-        }else if (name === 'subcat_image') {
-            setSubCategoryImage(files[0]);
-          }
+        }else if (name === 'cat_id') {
+            setCategoryId(value);
+        }
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
         const formData = new FormData();
-        formData.append('subcat_name', subCategoryName);
-        formData.append('cat_id', categoryId);
+        formData.append('subcat_name', subCatName);
+        formData.append('subcat_image', subCatImage);
         formData.append('status', status);
-        formData.append('subcat_image', subCategoryImage);
-        
+        formData.append('cat_id', categoryId);
+
         try {
-            const response = await axios.post(
-                'http://localhost:5000/api/v1/subcategories/create',
+            const response = await axios.put(
+                `http://localhost:5000/api/v1/subcategories/${subcategory.subcat_id}`,
                 formData,
+                // formValue,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -49,14 +53,15 @@ const NewSubcategories = () => {
 
             console.log(response.data);
 
-            toast.success('Sub category created successfully.');
+            toast.success('Sub Category updated successfully.');
+            navigate('/subcategories')
+            
         } catch (error) {
             console.error(error);
 
-            toast.error('Failed to create Sub category.');
+            toast.error('Failed to update sub category.');
         }
     };
-
 
     return (
         <div className='text-start'>
@@ -64,30 +69,40 @@ const NewSubcategories = () => {
                 <div className="col-md-12 grid-margin stretch-card">
                     <div className="card">
                         <div className="card-body">
-                            <h6 className="card-title">Create Subcategory</h6>
+                            <h6 className="card-title">Sub Category Update</h6>
 
                             <form
                                 className="forms-sample row"
                                 id="from_input"
-
                                 encType="multipart/form-data"
                                 onSubmit={handleSubmit}
-
+                                // onChange={InputValue}
                             >
-                                <div className="col-md-3">
-                                    <label for="name" className="form-label">
-                                        Subcategory Name
+                                <div className="col-md-4">
+                                    <label htmlFor="name" className="form-label">
+                                        Sub Category Name
                                     </label>
                                     <input
                                         type="text"
                                         className="form-control"
                                         id="name"
-                                        autocomplete="off"
+                                        autoComplete="off"
                                         name="subcat_name"
-
-                                        placeholder="Subcategory Name"
-                                        value={subCategoryName}
-
+                                        placeholder="Category Name"
+                                        defaultValue={subcategory.subcat_name}
+                                        onChange={handleInputChange}
+                                    />
+                                </div>
+                                <div className="col-md-4">
+                                    <label htmlFor="image" className="form-label">
+                                        Image
+                                    </label>
+                                    <input
+                                        type="file"
+                                        className="form-control"
+                                        id="image"
+                                        name="subcat_image"
+                                        placeholder="Images"
                                         onChange={handleInputChange}
                                     />
                                 </div>
@@ -113,47 +128,28 @@ const NewSubcategories = () => {
 
                                     </select>
                                 </div>
-                                <div className="col-md-3 d-none">
-                                    <label for="image" className="form-label">
-                                        Image
-                                    </label>
-                                    <input
-                                        type="file"
-                                        className="form-control "
-                                        id="image"
-                                        name="subcat_image"
-                                        placeholder="Sub category image"
-                                        onChange={handleInputChange}
-
-                                    />
-                                </div>
-
-                                <div className="col-md-3">
-                                    <label for="status" className="form-label">
+                                <div className="col-md-4">
+                                    <label htmlFor="status" className="form-label">
                                         Status
                                     </label>
                                     <select
                                         name="status"
                                         id="status"
                                         className="form-control"
-
-                                        value={status}
-                                        placeholder="Status"
                                         onChange={handleInputChange}
+                                        // defaultValue={SubCat.status}
                                     >
-                                        <option value="active" selected>
-                                            Active
-                                        </option>
-                                        <option value="inactive">In Active</option>
+                                        <option >Select Status</option>
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
                                     </select>
                                 </div>
-
 
                                 <div className="form-check col-md-4"></div>
                                 <div className="form-check col-md-4"></div>
                                 <div className="form-check col-md-4">
                                     <button type="submit" className="btn btn-primary me-2 mt-2 justify-content-end">
-                                        Submit
+                                        Update
                                     </button>
                                 </div>
                             </form>
@@ -164,5 +160,5 @@ const NewSubcategories = () => {
         </div>
     );
 };
+export default EditSubCategory;
 
-export default NewSubcategories;

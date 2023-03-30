@@ -9,8 +9,10 @@ import EditCategories from './Categories/EditCategories';
 import Brands from './Brands/Brands';
 import NewBrand from './Brands/NewBrand';
 import Subcategories from './Subcategories/Subcategories';
+import EditSubCategory from './Subcategories/EditSubCategory';
 import NewSubcategories from './Subcategories/NewSubcategories';
 import Products from './Products/Products';
+import EditProducts from './Products/EditProducts';
 import NewProducts from './Products/NewProducts';
 import Users from './Users/Users';
 import NewUsers from './Users/NewUsers';
@@ -34,8 +36,12 @@ const Layout = () => {
                 <Route path="/edit-brand/:BrandID" element={<EditBrand/>}></Route>
                 <Route path="/create-brand" element={<NewBrand/>}></Route>
                 <Route path="/subcategories" element={<Subcategories/>}></Route>
+                <Route path="/edit-subcategory" element={<EditSubCategory/> }></Route>
+                <Route path="/edit-subcategory/:subcatID" element={<EditSubCategory/> }></Route>
                 <Route path="/create-subcategories" element={<NewSubcategories/>}></Route>
                 <Route path="/products" element={<Products/>}></Route>
+                <Route path="/edit-products" element={<EditProducts/>}></Route>
+                <Route path="/edit-products/:productID" element={<EditProducts/>}></Route>
                 <Route path="/create-product" element={<NewProducts/>}></Route>
                 <Route path="/users" element={<Users/>}></Route>
                 <Route path="/create-user" element={<NewUsers/>}></Route>

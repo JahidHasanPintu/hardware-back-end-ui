@@ -1,14 +1,20 @@
-import axios from 'axios';
 import React, { useState } from 'react';
+import axios from 'axios';
+
 import { toast } from 'react-toastify';
 import useBrand from '../../hooks/useBrand';
 import useCategories from '../../hooks/useCategories';
 import useSubCategories from '../../hooks/useSubCategories';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const NewProducts = () => {
+const EditProducts = () => {
     const [categories] =useCategories();
     const [subCategories] =useSubCategories();
     const [brands] =useBrand();
+
+    const location = useLocation();
+    const product = location.state.product;
+    const navigate = useNavigate();
 
     const [productName, setProductName] = useState('');
     const [productImage, setProductImage] = useState(null);
@@ -19,27 +25,28 @@ const NewProducts = () => {
     const [subCat, setSubCat] = useState(null);
     const [brand, setBrand] = useState(null);
     const handleInputChange = (event) => {
-      const { name, value, files } = event.target;
-  
-      if (name === 'name') {
-        setProductName(value);
-      } else if (name === 'images') {
-        setProductImage(files[0]);
-      } else if (name === 'description') {
-        setProductDescription(value);
-      } else if (name === 'price') {
-        setProductPrice(value);
-      }
-       else if (name === 'quantity') {
-        setProductQunatity(value);
-      }else if (name === 'cat_id') {
-        setProductCat(value);
-      }else if (name === 'brand_id') {
-        setBrand(value);
-      }else if (name === 'subcat_id') {
-        setSubCat(value);
-      }
-    };
+        const { name, value, files } = event.target;
+        const product = location.state.product;
+      
+        if (name === 'name') {
+          setProductName(value || product.name);
+        } else if (name === 'images') {
+          setProductImage(files[0] || product.images[0]);
+        } else if (name === 'description') {
+          setProductDescription(value || product.description);
+        } else if (name === 'price') {
+          setProductPrice(value || product.price);
+        } else if (name === 'quantity') {
+          setProductQunatity(value || product.quantity);
+        } else if (name === 'cat_id') {
+          setProductCat(value || product.cat_id);
+        } else if (name === 'brand_id') {
+          setBrand(value || product.brand_id);
+        } else if (name === 'subcat_id') {
+          setSubCat(value || product.subcat_id);
+        }
+      };
+      
   
     const handleSubmit = async (event) => {
       event.preventDefault();
@@ -55,31 +62,34 @@ const NewProducts = () => {
       formData.append('subcat_id', subCat);
   
       try {
-        const response = await axios.post(
-          'http://localhost:5000/api/v1/products/create',
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          }
+        const response = await axios.put(
+            `http://localhost:5000/api/v1/products/${product.id}`,
+            formData,
+            // formValue,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
         );
-  
+
         console.log(response.data);
-  
-        toast.success('Product created successfully.');
-      } catch (error) {
+
+        toast.success('product updated successfully.');
+        navigate('/products')
+        
+    } catch (error) {
         console.error(error);
-  
-        toast.error('Failed to create product.');
-      }
+
+        toast.error('Failed to update product.');
+    }
     };
     return (
         <div className='text-start '>
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Upload Product</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Add new product</h6>
+                    <h5 class="card-title">Update Product</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Edit product details</h6>
                     <form
                     id="from_input"
                     encType="multipart/form-data"
@@ -94,6 +104,7 @@ const NewProducts = () => {
                                     onChange={handleInputChange} 
                                     type="text" 
                                     class="form-control" 
+                                    defaultValue={product.name}
                                     placeholder="Product name" />
                                 </div>
                             </div>
@@ -174,7 +185,11 @@ const NewProducts = () => {
                                 <div class="mb-3">
                                     <label class="form-label">Price</label>
                                     <input
-                                    onChange={handleInputChange} name='price' type="number" class="form-control" placeholder="eg: $25" />
+                                    onChange={handleInputChange}
+                                     name='price' 
+                                     type="number" 
+                                     defaultValue={product.price}
+                                     class="form-control" placeholder="eg: $25" />
                                 </div>
                             </div>
                         <div class="col-sm-3">
@@ -182,6 +197,7 @@ const NewProducts = () => {
                                     <label class="form-label">Quantiy</label>
                                     <input
                                     name='quantity'
+                                    defaultValue={product.quantity}
                                     onChange={handleInputChange}
                                      type="number" class="form-control"
                                       placeholder="eg: 52" />
@@ -206,7 +222,8 @@ const NewProducts = () => {
 								<h4 class="card-title">Product Description</h4>
 								<p class="text-muted mb-3">Details</p>
 								<textarea 
-                                class="form-control" 
+                                class="form-control"
+                                defaultValue={product.description} 
                                 onChange={handleInputChange}
                                 name="description" 
                                 id="easyMdeExample" 
@@ -216,7 +233,7 @@ const NewProducts = () => {
 					</div>
 				</div>
                 <button type="submit" class="btn btn-primary submit">
-                        submit
+                        Update
                     </button>
                     </form>
                     
@@ -228,4 +245,4 @@ const NewProducts = () => {
     );
 };
 
-export default NewProducts;
+export default EditProducts;

@@ -1,58 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import Pagination from '../Shared/Pagination/Pagination';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const Brands = () => {
     const [brands, setBrands] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [search, setSearch] = useState("");
     const [status, setStatus] = useState("");
     const [limit, setLimit] = useState(20);
-    const [singleBrand, setSingleBrand] = useState({});
     
 
     // Fetch data from server when component mounts
     useEffect(() => {
+        const getBrands = async () => {
+            const response = await fetch(`http://localhost:5000/api/v1/brands?page=${page}&limit=${limit}&search=${search}&status=${status}`);
+            const { success, data, totalItem  } = await response.json();
+    
+            if (success) {
+                setBrands(data);
+                setTotalPages(totalItem);
+            } else {
+                console.error("Error fetching data");
+            }
+        };
         getBrands();
-    }, []);
+    }, [page,limit,search,status]);
 
-    // Fetch data from server and update state
-    const getBrands = async () => {
-        const response = await fetch(`http://localhost:5000/api/v1/brands?page=${currentPage}&limit=${limit}&search=${search}&status=${status}`);
-        const { success, data, total } = await response.json();
-
-        if (success) {
-            setBrands(data);
-            setTotalPages(Math.ceil(total / limit));
-        } else {
-            console.error("Error fetching data");
-        }
-    };
-
-    // Update current page and fetch data
-    const handlePageChange = (page) => {
-        setCurrentPage(page);
-        getBrands();
-    };
+  
 
     // Searching and Filtering 
     const handleSearch = (e) => {
         const searchText = e.target.value;
-        if (searchText) {
-            setSearch(searchText);
-            getBrands();
-        } else {
-            getBrands();
-        }
+        setSearch(searchText);
+          
 
     }
     const handleFilter = (e) => {
         const status = e.target.value;
         setStatus(status);
-        getBrands();
     }
     const handleDelete = (id) => {
         fetch(`http://localhost:5000/api/v1/brands/${id}`, {
@@ -63,9 +50,8 @@ const Brands = () => {
         })
             .then(response => response.json())
             .then(data => {
-                getBrands();
+                
                 toast.success(data.message);
-                // Do something with the response data
             })
             .catch(error => {
                 console.log(error);
@@ -77,62 +63,14 @@ const Brands = () => {
 
     const navigate =useNavigate();
     const handleEdit = (brand) => {
-        // console.log(brandID);
         navigate(`/edit-brand/${brand.brand_id}`,{state: {brand : brand }});
       }
     
-    // Updating Brand details 
-    const [brandName, setBrandName] = useState('');
-    const [brandImage, setBrandImage] = useState(null);
-    const [newStatus, setNewStatus] = useState('active');
-
-    const handleInputChange = (event) => {
-        const { name, value, files } = event.target;
-
-        if (name === 'brand_name') {
-            setBrandName(value);
-        } else if (name === 'brand_image') {
-            setBrandImage(files[0]);
-        } else if (name === 'status') {
-            setNewStatus(value);
-        }
-    };
-
-    const handleSubmit = async (id) => {
-        
-        // event.preventDefault();
-
-        const formData = new FormData();
-        formData.append('brand_name', brandName);
-        formData.append('brand_image', brandImage);
-        formData.append('status', newStatus);
-
-        try {
-            const response = await axios.put(
-                `http://localhost:5000/api/v1/brands/${id}`,
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                }
-            );
-
-            console.log(response.data);
-            getBrands();
-            toast.success('Brand updated successfully.');
-        } catch (error) {
-            console.error(error);
-
-            toast.error('Failed to update brand.');
-        }
-    };
 
     const handleReset = () => {
         setSearch("");
         setStatus("");
         document.getElementById("filter_form").reset();
-        getBrands();
     }
 
     return (
@@ -162,8 +100,8 @@ const Brands = () => {
                                         onChange={handleFilter}
                                     >
                                         <option selected disabled>Select Status</option>
-                                        <option value={"active"}>InActive</option>
-                                        <option value={"inactive"}>Active</option>
+                                        <option value={"active"}>Active</option>
+                                        <option value={"inactive"}>InActive</option>
                                     </select>
                                 </div>
                             </div>
@@ -208,8 +146,6 @@ const Brands = () => {
 
                                                 <button type="button"
                                                     onClick={() => handleEdit(brand)}
-                                                    // data-bs-toggle="modal"
-                                                    // data-bs-target="#updateBrandModal"
                                                     class="btn btn-primary btn-icon me-1">
 
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
@@ -235,83 +171,11 @@ const Brands = () => {
                 </div>
             </div>
 
-            <div class="modal fade" id="updateBrandModal" tabindex="-1" aria-labelledby="updateBrandModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="updateBrandModalLabel">Change Brand Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="btn-close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form
-                                className="forms-sample row"
-                                id="from_input"
-                                encType="multipart/form-data"
-                            // onSubmit={() => handleSubmit(singleBrand.brand_id)}
-                            >
-                                <div className="col-md-4">
-                                    <label htmlFor="name" className="form-label">
-                                        Brand Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        className="form-control"
-                                        id="name"
-                                        autoComplete="off"
-                                        name="brand_name"
-                                        defaultValue={singleBrand.brand_name}
-                                        placeholder="Brand Name"
-                                        value={singleBrand.brand_name}
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className="col-md-4">
-                                    <label htmlFor="image" className="form-label">
-                                        Image
-                                    </label>
-                                    <input
-                                        type="file"
-                                        className="form-control"
-                                        id="image"
-                                        name="brand_image"
-                                        placeholder="Images"
-                                        onChange={handleInputChange}
-                                    />
-                                </div>
-                                <div className="col-md-4">
-                                    <label htmlFor="status" className="form-label">
-                                        Status
-                                    </label>
-                                    <select
-                                        name="status"
-                                        id="status"
-                                        className="form-control"
-                                        // value={status}
-                                        defaultValue={singleBrand.status}
-                                        onChange={handleInputChange}
-                                    >
-                                        <option value="active">Active</option>
-                                        <option value="inactive">Inactive</option>
-                                    </select>
-                                </div>
-
-                                <div className="form-check col-md-4"></div>
-                                <div className="form-check col-md-4"></div>
-                                <div className="form-check col-md-4">
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" onClick={() => handleSubmit(singleBrand.brand_id)} class="btn btn-primary">Update</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <Pagination
-                response={{ success: true, page: currentPage, limit: limit, total: totalPages }}
-                onPageChange={handlePageChange}
+                page={page}
+                limit={limit}
+                total={totalPages}
+                setPage={(page) => setPage(page)}
             />
 
 

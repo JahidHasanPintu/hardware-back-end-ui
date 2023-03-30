@@ -95,10 +95,10 @@ const Sidebar = () => {
               <ul className="nav sub-menu">
                 <li className="nav-item">
                   
-                  <Link to = "/subcategories"  className="nav-link">All Categories</Link>
+                  <Link to = "/subcategories"  className="nav-link">All SubCategories</Link>
                 </li>
                 <li className="nav-item">
-                <Link to = "/create-subcategories"  className="nav-link">Add New Categories</Link>
+                <Link to = "/create-subcategories"  className="nav-link">Add New SubCategories</Link>
                 </li>
                 
               </ul>

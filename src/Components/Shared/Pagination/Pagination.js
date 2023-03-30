@@ -1,7 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-function Pagination({ response }) {
-  const { success, page, limit, total } = response;
+function Pagination( { page, total, limit, setPage }) {
+  // const { success, page, limit, total } = response;
+  
 
   // Calculate the number of pages
   const numPages = Math.ceil(total / limit);
@@ -14,24 +16,32 @@ function Pagination({ response }) {
     <nav aria-label="Page navigation example">
       <ul className="pagination justify-content-end">
         <li className={`page-item ${prevDisabled ? "disabled" : ""}`}>
-          <a className="page-link" href={`/?page=${page - 1}`}>
+          <Link className="page-link" 
+          
+          
+          onClick = {()=>setPage(page - 1)}
+          >
             <i data-feather="chevron-left"></i>
-          </a>
+          </Link>
         </li>
         {[...Array(numPages)].map((_, index) => (
           <li
             key={index}
             className={`page-item ${page === index + 1 ? "active" : ""}`}
           >
-            <a className="page-link" href={`/?page=${index + 1}`}>
+            <Link className="page-link"
+            onClick = {()=>setPage(index + 1)}
+             >
               {index + 1}
-            </a>
+            </Link>
           </li>
         ))}
         <li className={`page-item ${nextDisabled ? "disabled" : ""}`}>
-          <a className="page-link" href={`/?page=${page + 1}`}>
+          <Link className="page-link"
+          onClick = {()=>setPage(page + 1)}
+           >
             <i data-feather="chevron-right"></i>
-          </a>
+          </Link>
         </li>
       </ul>
     </nav>

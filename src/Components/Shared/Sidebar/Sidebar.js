@@ -19,10 +19,10 @@ const Sidebar = () => {
         <ul className="nav">
           <li className="nav-item nav-category">Main</li>
           <li className="nav-item">
-            <a href="dashboard.html" className="nav-link">
+            <Link to={"/"} className="nav-link">
               <i className="link-icon" data-feather="box"></i>
               <span className="link-title">Dashboard</span>
-            </a>
+            </Link>
           </li>
           <li className="nav-item nav-category text-left">Inventory</li>
           <li className="nav-item">

@@ -69,6 +69,7 @@ const Products = () => {
             .then(data => {
 
                 toast.success(data.message);
+                setProducts(prevProducts => prevProducts.filter(prod => prod.id !== id));
             })
             .catch(error => {
                 console.log(error);

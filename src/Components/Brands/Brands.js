@@ -52,6 +52,7 @@ const Brands = () => {
             .then(data => {
                 
                 toast.success(data.message);
+                setBrands(prevBrands => prevBrands.filter(brand => brand.brand_id !== id));
             })
             .catch(error => {
                 console.log(error);

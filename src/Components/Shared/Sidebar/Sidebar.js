@@ -27,7 +27,7 @@ const Sidebar = () => {
           <li className="nav-item nav-category text-left">Inventory</li>
           <li className="nav-item">
             <a className="nav-link" data-bs-toggle="collapse" href="#emails" role="button" aria-expanded="false" aria-controls="emails">
-              <i className="link-icon" data-feather="mail"></i>
+              <i className="link-icon" data-feather="codesandbox"></i>
               <span className="link-title">Products</span>
               <i className="link-arrow" data-feather="chevron-down"></i>
             </a>
@@ -46,7 +46,7 @@ const Sidebar = () => {
           </li>
           <li className="nav-item">
             <a className="nav-link" data-bs-toggle="collapse" href="#brands" role="button" aria-expanded="false" aria-controls="brands">
-              <i className="link-icon" data-feather="mail"></i>
+              <i className="link-icon" data-feather="briefcase"></i>
               <span className="link-title">Brands</span>
               <i className="link-arrow" data-feather="chevron-down"></i>
             </a>
@@ -67,7 +67,7 @@ const Sidebar = () => {
 
           <li className="nav-item">
             <a className="nav-link" data-bs-toggle="collapse" href="#catgories" role="button" aria-expanded="false" aria-controls="catgories">
-              <i className="link-icon" data-feather="mail"></i>
+              <i className="link-icon" data-feather="layers"></i>
               <span className="link-title">Categories</span>
               <i className="link-arrow" data-feather="chevron-down"></i>
             </a>
@@ -87,7 +87,7 @@ const Sidebar = () => {
 
           <li className="nav-item">
             <a className="nav-link" data-bs-toggle="collapse" href="#subcatgories" role="button" aria-expanded="false" aria-controls="subcatgories">
-              <i className="link-icon" data-feather="mail"></i>
+              <i className="link-icon" data-feather="columns"></i>
               <span className="link-title">Sub Categories</span>
               <i className="link-arrow" data-feather="chevron-down"></i>
             </a>
@@ -107,7 +107,7 @@ const Sidebar = () => {
           
           <li className="nav-item">
             <a className="nav-link" data-bs-toggle="collapse" href="#users" role="button" aria-expanded="false" aria-controls="users">
-              <i className="link-icon" data-feather="mail"></i>
+              <i className="link-icon" data-feather="users"></i>
               <span className="link-title">Users</span>
               <i className="link-arrow" data-feather="chevron-down"></i>
             </a>

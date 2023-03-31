@@ -56,6 +56,7 @@ const Subcategories = () => {
             .then(data => {
                 
                 toast.success(data.message);
+                setSubCategories(prevSubCat => prevSubCat.filter(subcat => subcat.subcat_id !== id));
             })
             .catch(error => {
                 console.log(error);

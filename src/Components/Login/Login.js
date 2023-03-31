@@ -71,7 +71,7 @@ const Login = () => {
                                 placeholder="Enter email" />
                         </Form.Group>
 
-                        <Form.Group controlId="formBasicPassword">
+                        <Form.Group controlId="formBasicPassword mb-2">
                             <Form.Label>Password</Form.Label>
                             <Form.Control
                                 name='password'
@@ -81,8 +81,8 @@ const Login = () => {
                                 placeholder="Password" />
                         </Form.Group>
 
-                        <Button variant="primary" type="submit" className="w-100">
-                            Submit
+                        <Button variant="primary" type="submit" className="my-4 w-100">
+                            Login
                         </Button>
                     </Form>
                 </Card.Body>

@@ -33,6 +33,7 @@ const Categories = () => {
             .then(response => response.json())
             .then(data => {
                 toast.success(data.message);
+                setCategories(prevCategories => prevCategories.filter(cat => cat.cat_id !== id));
             })
             .catch(error => {
                 console.log(error);

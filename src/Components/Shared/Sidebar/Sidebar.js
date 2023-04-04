@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
     return (
@@ -35,10 +35,10 @@ const Sidebar = () => {
               <ul className="nav sub-menu">
                 <li className="nav-item">
                 {/* <Link to = "/home">Home</Link> */}
-                  <Link to="/products" className="nav-link">All Products</Link>
+                  <NavLink to="/products" className="nav-link">All Products</NavLink>
                 </li>
                 <li className="nav-item">
-                  <Link to="create-product" className="nav-link">Add New Product</Link>
+                  <NavLink to="create-product" className="nav-link">Add New Product</NavLink>
                 </li>
                 
               </ul>
@@ -54,11 +54,11 @@ const Sidebar = () => {
               <ul className="nav sub-menu">
                 <li className="nav-item">
                   
-                  <Link to = "/brands"  className="nav-link">All Brands</Link>
+                  <NavLink to = "/brands"  className="nav-link">All Brands</NavLink>
                   
                 </li>
                 <li className="nav-item">
-                  <Link to = "/create-brand"  className="nav-link">Add New Brand</Link>
+                  <NavLink to = "/create-brand"  className="nav-link">Add New Brand</NavLink>
                 </li>
                 
               </ul>
@@ -75,12 +75,11 @@ const Sidebar = () => {
               <ul className="nav sub-menu">
                 <li className="nav-item">
                   
-                  <Link to = "/categories"  className="nav-link">All Categories</Link>
+                  <NavLink to = "/categories"  className="nav-link">All Categories</NavLink>
                 </li>
                 <li className="nav-item">
-                <Link to = "/create-category"  className="nav-link">Add New Categories</Link>
+                <NavLink to = "/create-category"  className="nav-link">Add New Categories</NavLink>
                 </li>
-                
               </ul>
             </div>
           </li>
@@ -95,10 +94,10 @@ const Sidebar = () => {
               <ul className="nav sub-menu">
                 <li className="nav-item">
                   
-                  <Link to = "/subcategories"  className="nav-link">All SubCategories</Link>
+                  <NavLink to = "/subcategories"  className="nav-link">All SubCategories</NavLink>
                 </li>
                 <li className="nav-item">
-                <Link to = "/create-subcategories"  className="nav-link">Add New SubCategories</Link>
+                <NavLink to = "/create-subcategories"  className="nav-link">Add New SubCategories</NavLink>
                 </li>
                 
               </ul>
@@ -115,10 +114,10 @@ const Sidebar = () => {
               <ul className="nav sub-menu">
                 <li className="nav-item">
                   
-                  <Link to = "/users"  className="nav-link">All Users</Link>
+                  <NavLink to = "/users"  className="nav-link">All Users</NavLink>
                 </li>
                 <li className="nav-item">
-                <Link to = "/create-user"  className="nav-link">Add New User</Link>
+                <NavLink to = "/create-user"  className="nav-link">Add New User</NavLink>
                 </li>
                 
               </ul>

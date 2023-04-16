@@ -17,7 +17,7 @@ const Products = () => {
     const [catID, setCatID] = useState("");
     const [subcatID, setSubCatID] = useState("");
     const [brandID, setBrandID] = useState("");
-    const [limit, setLimit] = useState(5);
+    const [limit, setLimit] = useState(15);
 
     const [categories] = useCategories();
     const [subcategories] = useSubCategories();
@@ -32,6 +32,7 @@ const Products = () => {
             if (success) {
                 setProducts(data);
                 setTotalPages(totalItem);
+                console.log(data);
             } else {
                 console.error("Error fetching data");
             }
@@ -177,6 +178,7 @@ const Products = () => {
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Product Image</th>
                                         <th>Product Name</th>
                                         <th>Brand</th>
                                         <th>Category</th>
@@ -190,7 +192,10 @@ const Products = () => {
                                         products?.map((product, index) =>
                                             <tr key={product.id}>
                                                 <th>{index + 1}</th>
-                                                <td>{product.name}</td>
+                                                <td>
+                                                <img src={product.images[0]} class="img-fluid img-thumbnail" alt={product.name}></img>
+                                            </td>
+                                                <td>{product.name.slice(0,45)}..</td>
                                                 <td>{product.brand_name}</td>
                                                 <td>{product.cat_name}</td>
                                                 <td>{product.subcat_name}</td>

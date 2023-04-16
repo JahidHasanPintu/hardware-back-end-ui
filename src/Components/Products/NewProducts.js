@@ -12,12 +12,12 @@ const NewProducts = () => {
 
     const [productName, setProductName] = useState('');
     const [productImage, setProductImage] = useState(null);
-    const [productDescription, setProductDescription] = useState(null);
-    const [productPrice, setProductPrice] = useState(null);
-    const [productQunatity, setProductQunatity] = useState(null);
-    const [productCat, setProductCat] = useState(null);
-    const [subCat, setSubCat] = useState(null);
-    const [brand, setBrand] = useState(null);
+    const [productDescription, setProductDescription] = useState('');
+    const [productPrice, setProductPrice] = useState('');
+    const [productQunatity, setProductQunatity] = useState('');
+    const [productCat, setProductCat] = useState('');
+    const [subCat, setSubCat] = useState('');
+    const [brand, setBrand] = useState('');
     const handleInputChange = (event) => {
       const { name, value, files } = event.target;
   

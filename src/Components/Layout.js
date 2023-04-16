@@ -25,7 +25,7 @@ const Layout = () => {
             <Sidebar />
             <div className='page-wrapper text-left'>
                 <Navbar />
-                <div className="page-content text-left">
+                <div className="m-3 text-left">
                     <Routes>
 
                         <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>}></Route>

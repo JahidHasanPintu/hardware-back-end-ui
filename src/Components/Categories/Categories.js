@@ -9,7 +9,7 @@ const Categories = () => {
     const [totalPages, setTotalPages] = useState(0);
     const [search, setSearch] = useState("");
     const [status, setStatus] = useState("");
-    const [limit, setLimit] = useState(5);
+    const [limit, setLimit] = useState(20);
 
     // Searching and Filtering 
     const handleSearch = (e) => {

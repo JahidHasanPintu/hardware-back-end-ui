@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import getBaseUrl from '../BaseURL/getBaseUrl';
+import usePermissions from '../../hooks/usePermissions';
+import { useAuth } from '../../api/AuthContext';
 
 const NewBrand = () => {
   const [brandName, setBrandName] = useState('');
   const [brandImage, setBrandImage] = useState(null);
   const [status, setStatus] = useState('active');
+  const baseUrl = getBaseUrl();
+  const { user } = useAuth();
+  const permissions = usePermissions(user.role_id);
+  const hasViewPermission = permissions.includes('brands.view');
+  const hasEditPermission = permissions.includes('brands.edit');
+  const hasDeletePermission = permissions.includes('brands.delete');
+  const hasCreatePermission = permissions.includes('brands.create');
 
   const handleInputChange = (event) => {
     const { name, value, files } = event.target;
@@ -29,7 +39,7 @@ const NewBrand = () => {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/v1/brands/create',
+        `${baseUrl}/brands/create`,
         formData,
         {
           headers: {
@@ -49,76 +59,84 @@ const NewBrand = () => {
   };
 
   return (
-    <div className='text-start'>
-      <div className="row">
-        <div className="col-md-12 grid-margin stretch-card">
-          <div className="card">
-            <div className="card-body">
-              <h6 className="card-title">Brand Create</h6>
+    <div>
+      {hasCreatePermission ? (
+        <div className='text-start'>
+          <div className="row">
+            <div className="col-md-12 grid-margin stretch-card">
+              <div className="card">
+                <div className="card-body">
+                  <h6 className="card-title">Brand Create</h6>
 
-              <form
-                className="forms-sample row"
-                id="from_input"
-                encType="multipart/form-data"
-                onSubmit={handleSubmit}
-              >
-                <div className="col-md-4">
-                  <label htmlFor="name" className="form-label">
-                    Brand Name
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="name"
-                    autoComplete="off"
-                    name="brand_name"
-                    placeholder="Brand Name"
-                    value={brandName}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="col-md-4">
-                  <label htmlFor="image" className="form-label">
-                    Image
-                  </label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    id="image"
-                    name="brand_image"
-                    placeholder="Images"
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="col-md-4">
-                  <label htmlFor="status" className="form-label">
-                    Status
-                  </label>
-                  <select
-                    name="status"
-                    id="status"
-                    className="form-control"
-                    value={status}
-                    onChange={handleInputChange}
+                  <form
+                    className="forms-sample row"
+                    id="from_input"
+                    encType="multipart/form-data"
+                    onSubmit={handleSubmit}
                   >
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                  </select>
-                </div>
+                    <div className="col-md-4">
+                      <label htmlFor="name" className="form-label">
+                        Brand Name
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="name"
+                        autoComplete="off"
+                        name="brand_name"
+                        placeholder="Brand Name"
+                        value={brandName}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                    <div className="col-md-4">
+                      <label htmlFor="image" className="form-label">
+                        Image
+                      </label>
+                      <input
+                        type="file"
+                        className="form-control"
+                        id="image"
+                        name="brand_image"
+                        placeholder="Images"
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                    <div className="col-md-4">
+                      <label htmlFor="status" className="form-label">
+                        Status
+                      </label>
+                      <select
+                        name="status"
+                        id="status"
+                        className="form-control"
+                        value={status}
+                        onChange={handleInputChange}
+                      >
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                      </select>
+                    </div>
 
-                <div className="form-check col-md-4"></div>
-                <div className="form-check col-md-4"></div>
-                <div className="form-check col-md-4">
-                  <button type="submit" className="btn btn-primary me-2 mt-2 justify-content-end">
-                    Submit
-                  </button>
+                    <div className="form-check col-md-4"></div>
+                    <div className="form-check col-md-4"></div>
+                    <div className="form-check col-md-4">
+                      <button type="submit" className="btn btn-primary me-2 mt-2 justify-content-end">
+                        Submit
+                      </button>
+                    </div>
+                  </form>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+
+        <p>You don't have permission to view this component.</p>
+      )}
     </div>
+
   );
 };
 

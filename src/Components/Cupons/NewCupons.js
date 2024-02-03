@@ -5,53 +5,59 @@ import getBaseUrl from '../BaseURL/getBaseUrl';
 import usePermissions from '../../hooks/usePermissions';
 import { useAuth } from '../../api/AuthContext';
 
-const NewCategory = () => {
-  const [categoryName, setCategoryName] = useState('');
-  const [categoryImage, setCategoryImage] = useState(null);
-  const [status, setStatus] = useState('active');
+const NewCupons = () => {
+
+  const [code, setCode] = useState('');
+  const [discount, setDiscount] = useState('');
+  const [expire, setExpire] = useState('');
+  const [max, setMax] = useState('');
+
   const baseUrl = getBaseUrl();
   const { user } = useAuth();
   const permissions = usePermissions(user.role_id);
-  const hasCreatePermission = permissions.includes('brands.create');
+  const hasCreatePermission = permissions.includes('coupons.create');
 
   const handleInputChange = (event) => {
-    const { name, value, files } = event.target;
+    const { name, value } = event.target;
 
-    if (name === 'cat_name') {
-      setCategoryName(value);
-    } else if (name === 'cat_image') {
-      setCategoryImage(files[0]);
-    } else if (name === 'status') {
-      setStatus(value);
+    if (name === 'code') {
+      setCode(value);
+    } else if (name === 'discount') {
+      setDiscount(value);
+    } else if (name === 'expiry_date') {
+      setExpire(value);
+    } else if (name === 'max_uses') {
+      setMax(value);
     }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const formData = new FormData();
-    formData.append('cat_name', categoryName);
-    formData.append('cat_image', categoryImage);
-    formData.append('status', status);
-
     try {
+      const data = {
+        code: code,
+        discount: discount,
+        expiry_date: expire,
+        max_uses: max,
+      };
+
       const response = await axios.post(
-        `${baseUrl}/categories/create`,
-        formData,
+        `${baseUrl}/cupons/create`,
+        data,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            'Content-Type': 'application/json',
           },
         }
       );
 
       console.log(response.data);
 
-      toast.success('category created successfully.');
+      toast.success('coupon created successfully.');
     } catch (error) {
       console.error(error);
 
-      toast.error('Failed to create category.');
+      toast.error('Failed to create coupon.');
     }
   };
 
@@ -64,7 +70,7 @@ const NewCategory = () => {
               <div className="col-md-12 grid-margin stretch-card">
                 <div className="card">
                   <div className="card-body">
-                    <h6 className="card-title">Category Create</h6>
+                    <h6 className="card-title">Coupon Create</h6>
 
                     <form
                       className="forms-sample row"
@@ -73,50 +79,66 @@ const NewCategory = () => {
                       onSubmit={handleSubmit}
                     >
                       <div className="col-md-4">
-                        <label for="name" className="form-label">
-                          Category Name
+                        <label for="code" className="form-label">
+                          Coupon Code
                         </label>
                         <input
                           type="text"
                           className="form-control"
-                          id="name"
+                          id="code"
                           autocomplete="off"
-                          name="cat_name"
-                          value={categoryName}
-                          placeholder="category name"
+                          name="code"
+                          value={code}
+                          placeholder="coupon code"
                           onChange={handleInputChange}
                         />
                       </div>
                       <div className="col-md-4">
-                        <label for="image" className="form-label">
-                          Image
+                        <label for="discount" className="form-label">
+                          Discount
                         </label>
                         <input
-                          type="file"
+                          type="text"
                           className="form-control"
-                          id="image"
-                          name="cat_image"
-                          placeholder="Category Image"
+                          id="discount"
+                          autocomplete="off"
+                          name="discount"
+                          value={discount}
+                          placeholder="discount"
                           onChange={handleInputChange}
                         />
                       </div>
                       <div className="col-md-4">
-                        <label for="status" className="form-label">
-                          Status
+                        <label for="expiry_date" className="form-label">
+                          Expire Date
                         </label>
-                        <select
-                          name="status"
-                          id="status"
+                        <input
+                          type="text"
                           className="form-control"
-                          value={status}
+                          id="expiry_date"
+                          autocomplete="off"
+                          name="expiry_date"
+                          value={expire}
+                          placeholder="Eg: 2023-10-27"
                           onChange={handleInputChange}
-                        >
-                          <option value="active" selected>
-                            Active
-                          </option>
-                          <option value="inactive">In Active</option>
-                        </select>
+                        />
                       </div>
+                      <div className="col-md-4">
+                        <label for="max_uses" className="form-label">
+                          Maximum use
+                        </label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="max_uses"
+                          autocomplete="off"
+                          name="max_uses"
+                          value={max}
+                          placeholder="Max use"
+                          onChange={handleInputChange}
+                        />
+                      </div>
+
 
                       <div className="form-check col-md-4"></div>
                       <div className="form-check col-md-4"></div>
@@ -137,8 +159,7 @@ const NewCategory = () => {
         )
       }
     </div>
-
   );
 };
 
-export default NewCategory;
+export default NewCupons;

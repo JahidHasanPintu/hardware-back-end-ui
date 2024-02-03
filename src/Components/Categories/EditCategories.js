@@ -2,12 +2,13 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import getBaseUrl from '../BaseURL/getBaseUrl';
 
 const EditCategories = () => {
     const location = useLocation();
     const category = location.state.category;
     const navigate = useNavigate();
- 
+    const baseUrl = getBaseUrl();
 
 
     const [brandName, setBrandName] = useState('');
@@ -35,7 +36,7 @@ const EditCategories = () => {
 
         try {
             const response = await axios.put(
-                `http://localhost:5000/api/v1/categories/${category.cat_id}`,
+                `${baseUrl}/categories/${category.id}`,
                 formData,
                 // formValue,
                 {

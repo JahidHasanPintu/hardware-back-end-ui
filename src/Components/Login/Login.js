@@ -3,6 +3,7 @@ import { Card,Form, Button } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../api/AuthContext';
+import getBaseUrl from '../BaseURL/getBaseUrl';
 // import { ReactComponent as Logo } from './logo.svg';
 
 const Login = () => {
@@ -21,11 +22,13 @@ const Login = () => {
         });
     };
 
+    const baseUrl = getBaseUrl();
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         try {
-            const response = await fetch("http://localhost:5000/api/v1/users/login", {
+            const response = await fetch(`${baseUrl}/users/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

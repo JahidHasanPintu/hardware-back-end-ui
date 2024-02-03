@@ -1,13 +1,41 @@
 import { useEffect, useState } from 'react';
+import getBaseUrl from '../Components/BaseURL/getBaseUrl';
 
-const useBrand = () => {
+const useBrand = (page, limit, search, status) => {
+    let pageNum, pageLim, csearch, cstatus;
+
+    if (page) {
+      pageNum = page;
+    } else {
+      pageNum = 1;
+    }
+  
+    if (limit) {
+      pageLim = limit;
+    } else {
+      pageLim = 50;
+    }
+  
+    if (search) {
+      csearch = search;
+    } else {
+      csearch = "";
+    }
+  
+    if (status) {
+      cstatus = status;
+    } else {
+      cstatus = '';
+    }
+  
+
     const [brands,setBrands] = useState([]);
-    // const url = `process.env.BASE_URL/products`;
+    const baseUrl = getBaseUrl();
     useEffect(()=>{
-        fetch('http://localhost:5000/api/v1/brands')
+        fetch(`${baseUrl}/brands?page=${pageNum}&limit=${pageLim}&search=${csearch}&status=${cstatus}`)
         .then(res=>res.json())
         .then(data => setBrands(data.data));
-    },[])
+    },[pageNum, pageLim, csearch, cstatus, baseUrl])
 
     return [brands,setBrands];
 };

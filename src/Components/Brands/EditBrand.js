@@ -2,12 +2,13 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import getBaseUrl from '../BaseURL/getBaseUrl';
 
 const EditBrand = () => {
-    
+    const baseUrl = getBaseUrl();
     const location = useLocation();
     const brand = location.state.brand;
-    const brandID = brand.brand_id;
+    const brandID = brand.id;
 
     const [brandName, setBrandName] = useState('');
     const [brandImage, setBrandImage] = useState(null);
@@ -36,7 +37,7 @@ const EditBrand = () => {
 
         try {
             const response = await axios.put(
-                `http://localhost:5000/api/v1/brands/${brandID}`,
+                `${baseUrl}/brands/${brandID}`,
                 formData,
                 {
                     headers: {

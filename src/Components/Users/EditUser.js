@@ -6,26 +6,31 @@ import useRoles from '../../hooks/useRoles';
 import getBaseUrl from '../BaseURL/getBaseUrl';
 import { useAuth } from '../../api/AuthContext';
 import usePermissions from '../../hooks/usePermissions';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const NewUsers = () => {
+const EditUser = () => {
     const [roles] = useRoles();
     const baseUrl = getBaseUrl();
     const { user } = useAuth();
+    const location = useLocation();
+    const exUser = location.state.user;
+    const navigate = useNavigate();
+
     const permissions = usePermissions(user.role_id);
     const hasCreatePermission = permissions.includes('user.create');
 
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
+    const [fullName, setFullName] = useState(exUser.fullname||'');
+    const [email, setEmail] = useState(exUser.email||'');
+    const [phone, setPhone] = useState(exUser.phone||'');
     const [password, setPassword] = useState('');
-    const [address, setAddress] = useState('');
-    const [zipcode, setZipcode] = useState('');
-    const [city, setCity] = useState('');
-    const [division, setDivision] = useState('');
-    const [upazila, setUpazila] = useState('');
-    const [country, setCountry] = useState('');
-    const [role, setRole] = useState('2');
-    const [status, setStatus] = useState(false);
+    const [address, setAddress] = useState(exUser.address||'');
+    const [zipcode, setZipcode] = useState(exUser.zipcode||'');
+    const [city, setCity] = useState(exUser.city||'');
+    const [division, setDivision] = useState(exUser.division||'');
+    const [upazila, setUpazila] = useState(exUser.upazila||'');
+    const [country, setCountry] = useState(exUser.country||'');
+    const [role, setRole] = useState('');
+    const [status, setStatus] = useState(exUser.status||'');
     const [userImage, setUserImage] = useState(null);
 
     const handleInputChange = (event) => {
@@ -62,7 +67,7 @@ const NewUsers = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+      
         const formData = new FormData();
         formData.append('fullname', fullName);
         formData.append('email', email);
@@ -77,27 +82,78 @@ const NewUsers = () => {
         formData.append('role', role);
         formData.append('status', status);
         formData.append('image', userImage);
-
+      
         try {
-            const response = await axios.post(
-                `${baseUrl}/users/create`,
-                formData,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                }
-            );
-
-            console.log(response.data);
-
-            toast.success('User created successfully.');
+          const response = await axios.put(
+            `${baseUrl}/users/${exUser.id}`,
+            formData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            }
+          );
+      
+          console.log(response.data);
+          toast.success(response.data);
         } catch (error) {
-            console.error(error);
-
-            toast.error('Failed to create User.');
+          console.error(error);
+          toast.error('Failed to update User.');
         }
-    };
+      };
+
+    // const handleSubmit = async (event) => {
+    //     event.preventDefault();
+
+    //     const formData = new FormData();
+    //     formData.append('fullname', fullName);
+    //     formData.append('email', email);
+    //     formData.append('phone', phone);
+    //     formData.append('password', password);
+    //     formData.append('address', address);
+    //     formData.append('city', city);
+    //     formData.append('division', division);
+    //     formData.append('upazila', upazila);
+    //     formData.append('zipcode', zipcode);
+    //     formData.append('country', country);
+    //     formData.append('role', role);
+    //     formData.append('status', status);
+    //     formData.append('image', userImage);
+
+    //     const data = {
+    //         fullname: fullName ,
+    //         email: email,
+    //         phone: phone,
+    //         password: password,
+    //         address: address,
+    //         division: division,
+    //         city: city,
+    //         upazila: upazila,
+    //         zipcode: zipcode,
+    //         country : country,
+    //         status: status,
+    //         role: role
+    //     }
+    //     try {
+    //         const response = await axios.put(
+    //             `${baseUrl}/users/${exUser.id}`,
+    //             data,
+    //             {
+    //                 headers: {
+    //                     'Content-Type': 'multipart/form-data',
+    //                 },
+    //             }
+    //         );
+
+    //         console.log(response.data);
+
+    //         toast.success(response.data);
+    //     } catch (error) {
+    //         console.error(error);
+
+    //         toast.error('Failed to update User.');
+    //     }
+    // };
     return (
         <div>
             {
@@ -107,7 +163,7 @@ const NewUsers = () => {
                             <div className="col-md-12 grid-margin stretch-card">
                                 <div className="card">
                                     <div className="card-body">
-                                        <h6 className="card-title">Create a user</h6>
+                                        <h6 className="card-title">Update a user</h6>
 
                                         <form
                                             className="forms-sample row"
@@ -127,7 +183,7 @@ const NewUsers = () => {
                                                     id="name"
                                                     autocomplete="off"
                                                     name="fullname"
-
+                                                    defaultValue={exUser?.fullname}
                                                     placeholder="Enter full name"
                                                     value={fullName}
 
@@ -144,10 +200,10 @@ const NewUsers = () => {
                                                     id="name"
                                                     autocomplete="off"
                                                     name="phone"
-
+                                                    
                                                     placeholder="Phone Number"
                                                     value={phone}
-
+                                                    defaultValue={exUser.phone}
                                                     onChange={handleInputChange}
                                                 />
                                             </div>
@@ -373,4 +429,4 @@ const NewUsers = () => {
     );
 };
 
-export default NewUsers;
+export default EditUser;

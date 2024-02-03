@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useCategories from '../../hooks/useCategories';
+import getBaseUrl from '../BaseURL/getBaseUrl';
 
 const EditSubCategory = () => {
     const location = useLocation();
     const subcategory = location.state.subcategory;
     const navigate = useNavigate();
     const [categories] = useCategories();
-
+    const baseUrl = getBaseUrl();
  
 
     const [categoryId, setCategoryId] = useState('');
@@ -41,7 +42,7 @@ const EditSubCategory = () => {
 
         try {
             const response = await axios.put(
-                `http://localhost:5000/api/v1/subcategories/${subcategory.subcat_id}`,
+                `${baseUrl}/subcategories/${subcategory.subcat_id}`,
                 formData,
                 // formValue,
                 {
@@ -121,7 +122,7 @@ const EditSubCategory = () => {
                                     >
                                         <option>Select Parent Category</option>
                                         {categories?.map((category, key) =>
-                                            <option value={category.cat_id} >
+                                            <option value={category.id} >
                                                 {category.cat_name}
                                             </option>
                                         )}

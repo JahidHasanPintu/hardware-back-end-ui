@@ -1,5 +1,7 @@
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Pagination( { page, total, limit, setPage }) {
   // const { success, page, limit, total } = response;
@@ -21,7 +23,7 @@ function Pagination( { page, total, limit, setPage }) {
           
           onClick = {()=>setPage(page - 1)}
           >
-            <i data-feather="chevron-left"></i>
+            <FontAwesomeIcon icon={faChevronLeft} />
           </Link>
         </li>
         {[...Array(numPages)].map((_, index) => (
@@ -40,7 +42,7 @@ function Pagination( { page, total, limit, setPage }) {
           <Link className="page-link"
           onClick = {()=>setPage(page + 1)}
            >
-            <i data-feather="chevron-right"></i>
+            <FontAwesomeIcon icon={faChevronRight} />
           </Link>
         </li>
       </ul>
